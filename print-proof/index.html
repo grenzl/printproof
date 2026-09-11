@@ -1,117 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrintProof - Bypass Office Printer Crashes Instantly</title>
+<!-- PrintProof Dashboard Integration Widget -->
+<div class="w-full max-w-2xl mx-auto p-6 bg-slate-900/40 border border-slate-800 rounded-2xl shadow-xl backdrop-blur-sm text-slate-100 font-sans my-8">
     
-    <!-- Tailwind CSS Engine for Styling -->
-    <script src="https://tailwindcss.com"></script>
-    
-    <!-- Lucide Icons Library -->
+    <!-- PDF Engine Library Script Integration -->
     <script src="https://unpkg.com"></script>
-    
-    <!-- Alpine.js Engine to handle clicks and state without heavy frameworks -->
-    <script src="https://jsdelivr.net" defer></script>
-</head>
-<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans" 
-      x-data="{ isProcessing: false, isDone: false, handleDrop() { 
-          this.isProcessing = true; 
-          setTimeout(() => { 
-              this.isProcessing = false; 
-              this.isDone = true; 
-          }, 2000); 
-      }}">
 
-    <!-- Anti-Theft Domain Lock Script -->
+    <!-- Header Text inside Card -->
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-extrabold tracking-tight mb-1.5 flex items-center justify-center gap-2">
+            <svg xmlns="http://w3.org" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6 14" width="12" height="8"></rect></svg>
+            Print<span class="text-emerald-400">Proof</span> Engine
+        </h2>
+        <p class="text-slate-400 text-xs max-w-md mx-auto">
+            Strips driver-killing metadata, flattens structural corruption, and compiles a universal print-ready file. 100% Local Browser Execution.
+        </p>
+    </div>
+
+    <!-- The Interactive Engine Box -->
+    <div id="pp-drop-zone" class="border-2 border-dashed border-slate-700 hover:border-emerald-500 bg-slate-950/50 rounded-xl p-8 flex flex-col items-center justify-center transition-all cursor-pointer min-h-[200px]">
+        
+        <!-- Hidden native file picker -->
+        <input type="file" id="pp-file-picker" accept=".pdf" class="hidden" />
+
+        <!-- State 1: Ready to Drop -->
+        <div id="pp-state-ready" class="text-center">
+            <svg xmlns="http://w3.org" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 mx-auto mb-3 animate-pulse"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 18v-6"></path><path d="m9 15 3-3 3 3"></path></svg>
+            <p class="font-medium text-sm mb-1">Drag & Drop your unprintable PDF here</p>
+            <p class="text-[11px] text-slate-500">Or click to browse. No Sign-up. Zero Wait.</p>
+        </div>
+
+        <!-- State 2: Processing -->
+        <div id="pp-state-processing" class="text-center hidden">
+            <div class="animate-spin rounded-full h-7 w-7 border-b-2 border-emerald-400 mx-auto mb-3"></div>
+            <p class="text-xs font-medium text-emerald-400">Stripping Spooler-Killing Payload Layers...</p>
+        </div>
+
+        <!-- State 3: Done / Download -->
+        <div id="pp-state-done" class="text-center hidden">
+            <svg xmlns="http://w3.org" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400 mx-auto mb-3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <p class="font-semibold text-sm text-emerald-400 mb-2">File Repaired & Rebuilt!</p>
+            <button id="pp-download-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2 rounded-lg shadow-md transition-transform transform active:scale-95 text-xs">
+                Download Print-Ready PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Script Block using unique variable scopes to protect modukit scripts -->
     <script>
         (function() {
-            // REPLACE 'yourusername.github.io' with your actual target URL later
-            const authorizedHost = window.location.hostname; 
-            if (window.location.hostname !== authorizedHost && window.location.hostname !== "localhost") {
-                document.body.innerHTML = "<div class='flex items-center justify-center h-screen'><h1 class='text-xl text-red-500 font-bold'>Environment Lock Triggered: Unauthorized Domain</h1></div>";
-                throw new Error("Anti-theft protection active.");
+            const dropZone = document.getElementById('pp-drop-zone');
+            const filePicker = document.getElementById('pp-file-picker');
+            const stateReady = document.getElementById('pp-state-ready');
+            const stateProcessing = document.getElementById('pp-state-processing');
+            const stateDone = document.getElementById('pp-state-done');
+            const downloadBtn = document.getElementById('pp-download-btn');
+
+            let repairedFileUrl = null;
+            let repairedFileName = "PRINT_READY_FLATTENED.pdf";
+
+            dropZone.addEventListener('click', () => {
+                if (stateReady.classList.contains('hidden') === false) {
+                    filePicker.click();
+                }
+            });
+
+            filePicker.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) processPdf(e.target.files[0]);
+            });
+
+            dropZone.addEventListener('dragover', (e) => e.preventDefault());
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length > 0 && e.dataTransfer.files[0].type === "application/pdf") {
+                    processPdf(e.dataTransfer.files[0]);
+                } else {
+                    alert("Please drop a valid PDF file.");
+                }
+            });
+
+            async function processPdf(file) {
+                stateReady.classList.add('hidden');
+                stateProcessing.classList.remove('hidden');
+                repairedFileName = "FIXED_" + file.name;
+
+                try {
+                    const fileBytes = await file.arrayBuffer();
+                    const pdfDoc = await PDFLib.PDFDocument.load(fileBytes, { ignoreEncryption: true });
+                    const cleanPdfDoc = await PDFLib.PDFDocument.create();
+                    
+                    const pageIndices = Array.from({ length: pdfDoc.getPageCount() }, (_, i) => i);
+                    const copiedPages = await cleanPdfDoc.copyPages(pdfDoc, pageIndices);
+                    copiedPages.forEach((page) => cleanPdfDoc.addPage(page));
+
+                    const cleanPdfBytes = await cleanPdfDoc.save();
+                    const blob = new Blob([cleanPdfBytes], { type: "application/pdf" });
+                    repairedFileUrl = URL.createObjectURL(blob);
+
+                    stateProcessing.classList.add('hidden');
+                    stateDone.classList.remove('hidden');
+                } catch (error) {
+                    console.error(error);
+                    alert("Error processing PDF structure.");
+                    stateProcessing.classList.add('hidden');
+                    stateReady.classList.remove('hidden');
+                }
             }
+
+            downloadBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (repairedFileUrl) {
+                    const link = document.createElement('a');
+                    link.href = repairedFileUrl;
+                    link.download = repairedFileName;
+                    link.click();
+                }
+            });
         })();
     </script>
-
-    <!-- Header -->
-    <header class="border-b border-slate-800 p-4 w-full">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 font-bold text-xl tracking-tight">
-                <i data-lucide="printer" class="text-emerald-400"></i>
-                <span>Print<span class="text-emerald-400">Proof</span></span>
-            </div>
-            <span class="text-xs bg-slate-900 border border-slate-700 px-2 py-1 rounded text-slate-400 flex items-center gap-1">
-                <i data-lucide="shield" class="w-3 h-3 text-emerald-400"></i> 100% Local Browser Execution
-            </span>
-        </div>
-    </header>
-
-    <!-- Main App Workspace -->
-    <main class="max-w-2xl mx-auto w-full p-6 flex-grow flex flex-col justify-center">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold tracking-tight mb-2 sm:text-4xl">
-                Bypass Office Printer Crashes Instantly.
-            </h1>
-            <p class="text-slate-400 text-sm">
-                Strips corrupted vector metadata, flattens unreadable fonts, and generates a universal print-ready file.
-            </p>
-        </div>
-
-        <!-- The 3-Second Drop Zone -->
-        <div @dragover.prevent 
-             @drop.prevent="handleDrop()" 
-             @click="handleDrop()"
-             class="border-2 border-dashed border-slate-700 hover:border-emerald-500 bg-slate-900/50 rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer min-h-[240px]">
-            
-            <!-- State 1: Ready to Drop -->
-            <template x-if="!isProcessing && !isDone">
-                <div class="text-center">
-                    <i data-lucide="file-up" class="w-12 h-12 text-slate-500 mx-auto mb-4 animate-pulse"></i>
-                    <p class="font-medium mb-1">Drag & Drop your unprintable PDF here</p>
-                    <p class="text-xs text-slate-500">Or click to select a file. No Sign-up. Zero Wait.</p>
-                </div>
-            </template>
-
-            <!-- State 2: Processing Processing -->
-            <template x-if="isProcessing">
-                <div class="text-center">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
-                    <p class="text-sm font-medium text-emerald-400">Stripping Driver-Killing Payload Layers...</p>
-                </div>
-            </template>
-
-            <!-- State 3: Done / Download -->
-            <template x-if="isDone">
-                <div class="text-center">
-                    <i data-lucide="check-circle" class="w-12 h-12 text-emerald-400 mx-auto mb-4"></i>
-                    <p class="font-semibold text-emerald-400 mb-2">File Repaired Successfully!</p>
-                    <button class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg shadow-lg transition-transform transform active:scale-95 text-sm">
-                        Download Print-Ready PDF
-                    </button>
-                </div>
-            </template>
-        </div>
-
-        <!-- Native Sponsorship Engine Slot -->
-        <div class="mt-8 border border-slate-800 bg-slate-900/30 rounded-xl p-4 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2">
-                <span class="text-[10px] font-bold tracking-widest uppercase bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 shrink-0">Sponsor</span>
-                <span class="text-slate-300 font-medium">Tired of legacy paper workflows failing your deadlines?</span>
-            </div>
-            <a href="#" class="text-emerald-400 font-bold hover:underline shrink-0 ml-4">Switch to DocuSign Edge →</a>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 p-4 text-center text-xs text-slate-600">
-        © 2026 PrintProof.app • Secured Local Environment.
-    </footer>
-
-    <!-- Initialize Icons -->
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+</div>
