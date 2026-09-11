@@ -105,30 +105,34 @@
             }
         });
 
+        // FIXED: Extract target file item out of input click array list using [0]
         filePicker.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) processPdfFile(e.target.files[0]);
-        });
-
-        dropZone.addEventListener('dragover', (e) => e.preventDefault());
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            if (e.dataTransfer.files.length > 0) {
-                const file = e.dataTransfer.files[0];
-                if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
-                    processPdfFile(file);
-                } else {
-                    alert("Please drop a valid PDF file.");
-                }
+            if (e.target.files.length > 0) {
+                processPdfFile(e.target.files[0]);
             }
         });
 
-        async function processPdfFile(file) {
+        dropZone.addEventListener('dragover', (e) => e.preventDefault());
+        
+        // FIXED: Extract target file item out of browser drag/drop array list using [0]
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files.length > 0) {
+                const droppedFile = e.dataTransfer.files[0];
+                processPdfFile(droppedFile);
+            }
+        });
+
+        // Receives a single clean File Object target directly
+        async function processPdfFile(targetFile) {
             stateReady.classList.add('hidden');
             stateProcessing.classList.remove('hidden');
-            repairedFileName = `FIXED_${file.name}`;
+            repairedFileName = `FIXED_${targetFile.name}`;
 
             try {
-                const fileBytes = await file.arrayBuffer();
+                // Read the single clean file instance byte map array buffer
+                const fileBytes = await targetFile.arrayBuffer();
+                
                 const pdfDoc = await PDFLib.PDFDocument.load(fileBytes, { ignoreEncryption: true });
                 const cleanPdfDoc = await PDFLib.PDFDocument.create();
                 
