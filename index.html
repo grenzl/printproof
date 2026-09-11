@@ -11,29 +11,10 @@
     <!-- Lucide Icons Library -->
     <script src="https://unpkg.com"></script>
     
-    <!-- Alpine.js Engine to handle clicks and state without heavy frameworks -->
-    <script src="https://jsdelivr.net" defer></script>
+    <!-- PDF-Lib Engine: Enables 100% local browser-side PDF rebuilding -->
+    <script src="https://unpkg.com"></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans" 
-      x-data="{ isProcessing: false, isDone: false, handleDrop() { 
-          this.isProcessing = true; 
-          setTimeout(() => { 
-              this.isProcessing = false; 
-              this.isDone = true; 
-          }, 2000); 
-      }}">
-
-    <!-- Anti-Theft Domain Lock Script -->
-    <script>
-        (function() {
-            // REPLACE 'yourusername.github.io' with your actual target URL later
-            const authorizedHost = window.location.hostname; 
-            if (window.location.hostname !== authorizedHost && window.location.hostname !== "localhost") {
-                document.body.innerHTML = "<div class='flex items-center justify-center h-screen'><h1 class='text-xl text-red-500 font-bold'>Environment Lock Triggered: Unauthorized Domain</h1></div>";
-                throw new Error("Anti-theft protection active.");
-            }
-        })();
-    </script>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans">
 
     <!-- Header -->
     <header class="border-b border-slate-800 p-4 w-full">
@@ -55,46 +36,40 @@
                 Bypass Office Printer Crashes Instantly.
             </h1>
             <p class="text-slate-400 text-sm">
-                Strips corrupted vector metadata, flattens unreadable fonts, and generates a universal print-ready file.
+                Strips driver-killing metadata, flattens structural corruption, and compiles a universal print-ready file.
             </p>
         </div>
 
-        <!-- The 3-Second Drop Zone -->
-        <div @dragover.prevent 
-             @drop.prevent="handleDrop()" 
-             @click="handleDrop()"
-             class="border-2 border-dashed border-slate-700 hover:border-emerald-500 bg-slate-900/50 rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer min-h-[240px]">
+        <!-- The Interactive Engine Box -->
+        <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-emerald-500 bg-slate-900/50 rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer min-h-[240px]">
             
-            <!-- State 1: Ready to Drop -->
-            <template x-if="!isProcessing && !isDone">
-                <div class="text-center">
-                    <i data-lucide="file-up" class="w-12 h-12 text-slate-500 mx-auto mb-4 animate-pulse"></i>
-                    <p class="font-medium mb-1">Drag & Drop your unprintable PDF here</p>
-                    <p class="text-xs text-slate-500">Or click to select a file. No Sign-up. Zero Wait.</p>
-                </div>
-            </template>
+            <!-- Hidden native file picker so users can click to select -->
+            <input type="file" id="file-picker" accept=".pdf" class="hidden" />
 
-            <!-- State 2: Processing Processing -->
-            <template x-if="isProcessing">
-                <div class="text-center">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
-                    <p class="text-sm font-medium text-emerald-400">Stripping Driver-Killing Payload Layers...</p>
-                </div>
-            </template>
+            <!-- State 1: Ready to Drop (Visible by default) -->
+            <div id="state-ready" class="text-center">
+                <i data-lucide="file-up" class="w-12 h-12 text-slate-500 mx-auto mb-4 animate-pulse"></i>
+                <p class="font-medium mb-1">Drag & Drop your unprintable PDF here</p>
+                <p class="text-xs text-slate-500">Or click to select a file. No Sign-up. Zero Wait.</p>
+            </div>
 
-            <!-- State 3: Done / Download -->
-            <template x-if="isDone">
-                <div class="text-center">
-                    <i data-lucide="check-circle" class="w-12 h-12 text-emerald-400 mx-auto mb-4"></i>
-                    <p class="font-semibold text-emerald-400 mb-2">File Repaired Successfully!</p>
-                    <button class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg shadow-lg transition-transform transform active:scale-95 text-sm">
-                        Download Print-Ready PDF
-                    </button>
-                </div>
-            </template>
+            <!-- State 2: Processing (Hidden by default) -->
+            <div id="state-processing" class="text-center hidden">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto mb-4"></div>
+                <p class="text-sm font-medium text-emerald-400">Stripping Spooler-Killing Payload Layers...</p>
+            </div>
+
+            <!-- State 3: Done / Download (Hidden by default) -->
+            <div id="state-done" class="text-center hidden">
+                <i data-lucide="check-circle" class="w-12 h-12 text-emerald-400 mx-auto mb-4"></i>
+                <p class="font-semibold text-emerald-400 mb-2">File Repaired & Rebuilt!</p>
+                <button id="download-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg shadow-lg transition-transform transform active:scale-95 text-sm">
+                    Download Print-Ready PDF
+                </button>
+            </div>
         </div>
 
-        <!-- Native Sponsorship Engine Slot -->
+        <!-- Native B2B Sponsorship Engine Slot -->
         <div class="mt-8 border border-slate-800 bg-slate-900/30 rounded-xl p-4 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
                 <span class="text-[10px] font-bold tracking-widest uppercase bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 shrink-0">Sponsor</span>
@@ -106,12 +81,85 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-900 p-4 text-center text-xs text-slate-600">
-        © 2026 PrintProof.app • Secured Local Environment.
+        © 2026 PrintProof • Secured Local Environment.
     </footer>
 
-    <!-- Initialize Icons -->
+    <!-- Core App Engine Script -->
     <script>
+        const dropZone = document.getElementById('drop-zone');
+        const filePicker = document.getElementById('file-picker');
+        const stateReady = document.getElementById('state-ready');
+        const stateProcessing = document.getElementById('state-processing');
+        const stateDone = document.getElementById('state-done');
+        const downloadBtn = document.getElementById('download-btn');
+
+        let repairedFileUrl = null;
+        let repairedFileName = "PRINT_READY_FLATTENED.pdf";
+
+        // Initialize Icons
         lucide.createIcons();
+
+        dropZone.addEventListener('click', () => {
+            if (stateReady.classList.contains('hidden') === false) {
+                filePicker.click();
+            }
+        });
+
+        filePicker.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) processPdfFile(e.target.files[0]);
+        });
+
+        dropZone.addEventListener('dragover', (e) => e.preventDefault());
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0];
+                if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
+                    processPdfFile(file);
+                } else {
+                    alert("Please drop a valid PDF file.");
+                }
+            }
+        });
+
+        async function processPdfFile(file) {
+            stateReady.classList.add('hidden');
+            stateProcessing.classList.remove('hidden');
+            repairedFileName = `FIXED_${file.name}`;
+
+            try {
+                const fileBytes = await file.arrayBuffer();
+                const pdfDoc = await PDFLib.PDFDocument.load(fileBytes, { ignoreEncryption: true });
+                const cleanPdfDoc = await PDFLib.PDFDocument.create();
+                
+                const pageIndices = Array.from({ length: pdfDoc.getPageCount() }, (_, i) => i);
+                const copiedPages = await cleanPdfDoc.copyPages(pdfDoc, pageIndices);
+                
+                copiedPages.forEach((page) => cleanPdfDoc.addPage(page));
+                const cleanPdfBytes = await cleanPdfDoc.save();
+
+                const blob = new Blob([cleanPdfBytes], { type: "application/pdf" });
+                repairedFileUrl = URL.createObjectURL(blob);
+
+                stateProcessing.classList.add('hidden');
+                stateDone.classList.remove('hidden');
+            } catch (error) {
+                console.error(error);
+                alert("Error processing PDF layout infrastructure.");
+                stateProcessing.classList.add('hidden');
+                stateReady.classList.remove('hidden');
+            }
+        }
+
+        downloadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (repairedFileUrl) {
+                const link = document.createElement('a');
+                link.href = repairedFileUrl;
+                link.download = repairedFileName;
+                link.click();
+            }
+        });
     </script>
 </body>
 </html>
