@@ -1,58 +1,83 @@
-<!-- Self-Contained PrintProof Widget (Bypasses framework compilation) -->
-<div style="background-color: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 24px; max-width: 42rem; margin: 32px auto; font-family: sans-serif; color: #f8fafc; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModuKit — PrintProof Engine</title>
     
-    <!-- PDF Engine Library Script Integration -->
+    <!-- PDF Processing Engine Integration Script -->
     <script src="https://unpkg.com"></script>
+</head>
+<body style="background-color: #030712; color: #f9fafb; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 40px 16px; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
 
-    <!-- Header Text Section -->
-    <div style="text-align: center; margin-bottom: 24px;">
-        <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <svg xmlns="http://w3.org" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6 14" width="12" height="8"></rect></svg>
-            Print<span style="color: #34d399;">Proof</span> Engine
-        </h2>
-        <p style="color: #94a3b8; font-size: 0.75rem; max-width: 28rem; margin: 0 auto; line-height: 1.4;">
-            Strips driver-killing metadata, flattens structural corruption, and compiles a universal print-ready file. 100% Local Browser Execution.
-        </p>
-    </div>
-
-    <!-- The Interactive Engine Box -->
-    <div id="pp-drop-zone" style="border: 2px dashed #334155; background-color: #020617; border-radius: 0.75rem; padding: 32px; display: flex; flex-direction: flex-col; align-items: center; justify-content: center; min-height: 200px; cursor: pointer; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='#34d399'" onmouseout="this.style.borderColor='#334155'">
+    <!-- Main Container -->
+    <div style="max-width: 42rem; width: 100%; margin: auto; box-sizing: border-box;">
         
-        <!-- Hidden native file picker -->
-        <input type="file" id="pp-file-picker" accept=".pdf" style="display: none;" />
-
-        <!-- State 1: Ready to Drop -->
-        <div id="pp-state-ready" style="text-align: center; width: 100%;">
-            <svg xmlns="http://w3.org" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px auto;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 18v-6"></path><path d="m9 15 3-3 3 3"></path></svg>
-            <p style="font-weight: 500; font-size: 0.875rem; margin-bottom: 4px; color: #e2e8f0;">Drag & Drop your unprintable PDF here</p>
-            <p style="font-size: 0.6875rem; color: #64748b; margin: 0;">Or click to browse. No Sign-up. Zero Wait.</p>
+        <!-- Header / Back Navigation Link -->
+        <div style="margin-bottom: 32px;">
+            <a href="/" style="color: #9ca3af; font-size: 0.875rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                ← Back to ModuKit Dashboard
+            </a>
         </div>
 
-        <!-- State 2: Processing -->
-        <div id="pp-state-processing" style="text-align: center; display: none; width: 100%;">
-            <div style="border: 3px solid #1e293b; border-top: 3px solid #34d399; border-radius: 50%; width: 28px; height: 28px; margin: 0 auto 12px auto; animation: spin 1s linear infinite;"></div>
-            <p style="font-size: 0.75rem; font-weight: 500; color: #34d399; margin: 0;">Stripping Spooler-Killing Payload Layers...</p>
+        <!-- App Header Graphic Content -->
+        <div style="text-align: center; margin-bottom: 32px;">
+            <h1 style="font-size: 2.25rem; font-weight: 800; tracking: -0.025em; margin: 0 0 10px 0; color: #ffffff;">
+                Print<span style="color: #10b981;">Proof</span> Engine
+            </h1>
+            <p style="color: #9ca3af; font-size: 0.875rem; max-width: 28rem; margin: 0 auto; line-height: 1.5;">
+                Strips driver-killing metadata anomalies, flattens corrupted formatting vectors, and recompiles a universal document local layout.
+            </p>
         </div>
 
-        <!-- State 3: Done / Download -->
-        <div id="pp-state-done" style="text-align: center; display: none; width: 100%;">
-            <svg xmlns="http://w3.org" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px auto;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <p style="font-weight: 600; font-size: 0.875rem; color: #34d399; margin-bottom: 8px;">File Repaired & Rebuilt!</p>
-            <button id="pp-download-btn" style="background-color: #34d399; color: #020617; font-weight: 700; padding: 8px 20px; border-radius: 0.5rem; border: none; font-size: 0.75rem; cursor: pointer; transition: transform 0.1s ease; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                Download Print-Ready PDF
-            </button>
+        <!-- The Interactive Engine Box Workspace Container -->
+        <div id="pp-drop-zone" style="border: 2px dashed #374151; background-color: #0b0f19; border-radius: 1rem; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px; cursor: pointer; text-align: center; box-sizing: border-box; transition: border-color 0.2s ease-in-out;">
+            
+            <!-- Hidden native file controller browser connector -->
+            <input type="file" id="pp-file-picker" accept=".pdf" style="display: none;" />
+
+            <!-- State 1: Active Dropping Window Display Ready -->
+            <div id="pp-state-ready" style="width: 100%;">
+                <div style="font-size: 2.5rem; margin-bottom: 12px; color: #4b5563;">📥</div>
+                <p style="font-weight: 600; font-size: 1rem; margin: 0 0 4px 0; color: #e5e7eb;">Drag & Drop your unprintable PDF here</p>
+                <p style="font-size: 0.75rem; color: #6b7280; margin: 0;">Or click to browse storage locally. No log-ins required.</p>
+            </div>
+
+            <!-- State 2: Structural Compiling Evaluation Engine Loader -->
+            <div id="pp-state-processing" style="display: none; width: 100%;">
+                <div style="border: 3px solid #1f2937; border-top: 3px solid #10b981; border-radius: 50%; width: 32px; height: 32px; margin: 0 auto 16px auto; animation: pp-spin 0.8s linear infinite;"></div>
+                <p style="font-size: 0.875rem; font-weight: 500; color: #10b981; margin: 0;">Rebuilding Document & Stripping Spooler Payloads...</p>
+            </div>
+
+            <!-- State 3: Clean Complete Extraction Available -->
+            <div id="pp-state-done" style="display: none; width: 100%;">
+                <div style="font-size: 2.5rem; margin-bottom: 12px;">✅</div>
+                <p style="font-weight: 700; font-size: 1rem; color: #10b981; margin: 0 0 16px 0;">Structure Repaired Successfully!</p>
+                <button id="pp-download-btn" style="background-color: #10b981; color: #030712; font-weight: 700; padding: 12px 24px; border-radius: 0.5rem; border: none; font-size: 0.875rem; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: background-color 0.2s;">
+                    Download Print-Ready PDF
+                </button>
+            </div>
         </div>
+
     </div>
 
-    <!-- Embedded CSS Animation Keyframe for the Spinner -->
+    <!-- Footer Support Systems Info Branding Layout -->
+    <footer style="text-align: center; color: #4b5563; font-size: 0.75rem; margin-top: 40px;">
+        © 2026 ModuKit Utility Suite • Secured Sandbox Processing Runtime Environment.
+    </footer>
+
+    <!-- CSS Keyframe Animation Stylesheets injection -->
     <style>
-        @keyframes spin {
+        @keyframes pp-spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        #pp-drop-zone:hover {
+            border-color: #10b981 !important;
+        }
     </style>
 
-    <!-- App Engine Script Engine Wrapper -->
+    <!-- Runtime Engine Code Base Logics Logic Script Wrap execution -->
     <script>
         (function() {
             const dropZone = document.getElementById('pp-drop-zone');
@@ -75,15 +100,18 @@
                 if (e.target.files.length > 0) processPdf(e.target.files[0]);
             });
 
-            dropZone.addEventListener('dragover', (e) => e.preventDefault());
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
             dropZone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 if (e.dataTransfer.files.length > 0) {
-                    const file = e.dataTransfer.files[0];
-                    if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
-                        processPdf(file);
+                    const droppedFile = e.dataTransfer.files[0];
+                    if (droppedFile.type === "application/pdf" || droppedFile.name.endsWith('.pdf')) {
+                        processPdf(droppedFile);
                     } else {
-                        alert("Please drop a valid PDF file.");
+                        alert("Invalid format: Please drop a standard file of type .pdf");
                     }
                 }
             });
@@ -110,7 +138,7 @@
                     stateDone.style.display = 'block';
                 } catch (error) {
                     console.error(error);
-                    alert("Error rebuilding file structure.");
+                    alert("Error rebuilding file layout vector paths.");
                     stateProcessing.style.display = 'none';
                     stateReady.style.display = 'block';
                 }
@@ -127,4 +155,5 @@
             });
         })();
     </script>
-</div>
+</body>
+</html>
